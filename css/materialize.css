@@ -5,6 +5,8 @@
  */
 
 .ethnicity{
+    position: relative;
+    left: 100px;
     width: 50px;
     padding: 0px;
     margin: 0; 

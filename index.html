@@ -1,66 +1,461 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Bootstrap Case</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
-  <link rel="stylesheet" href="style.css"/>
-</head>
-<body>
+<meta charset="utf-8">
+<html>
+	<head>
+		<title>Health Care Visualization</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="style.css">		
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">WebSiteName</a>
-    </div>
-    <div>
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Page 1-1</a></li>
-            <li><a href="#">Page 1-2</a></li>
-            <li><a href="#">Page 1-3</a></li>
-          </ul>
-        </li>
-        <li><a href="#">Page 2</a></li>
-        <li><a href="#">Page 3</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-  
-<div class="days-hours-heatmap">
-      <!-- calibration and render type controller -->
-      <div class="calibration" role="calibration">
-        <div class="group" role="example">
-          <svg width="120" height="17">
-          </svg>
-          <div role="description" class="description">
-            <label>Less</label>
-            <label>More</label>
-          </div>        
-        </div>
-        <div role="toggleDisplay" class="display-control">
-          <div>
-            <input type="radio" name="displayType" checked/>
-            <label>count</label>
-          </div>
-          <div>
-            <input type="radio" name="displayType"/>
-            <label>daily</label> 
-          </div>
-        </div>
-      </div>
-      <!-- heatmap -->
-      <svg role="heatmap" class="heatmap"></svg>
-    </div>
-    
-    <script type="text/javascript" src="app.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>		
+		<script src="http://d3js.org/d3.v3.js"></script>
+		
+		
+	</head>
+	<body>
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand">HealthCare Viz</a>
+				</div>
+				<div>
+					<ul class="nav navbar-nav">
+						<li><a style="padding-right:0px"><input id='filter-gender-setting' type="checkbox" onchange="myFilterFunction()"></a><li>
+						<li class="dropdown">					
+							<a class="dropdown-toggle" data-toggle="dropdown">Sex<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a><label><input id="male_chk" type="checkbox" value="" onchange="myFilterFunction()" checked>  Male</label></a></li>
+								<li><a><label><input id="female_chk" type="checkbox" value="" onchange="myFilterFunction()" checked>  Female</label></a></li>
+							</ul>
+						</li>
+						<li><a style="padding-right:0px"><input id = 'filter-race-setting' type="checkbox" onchange="myFilterFunction()"></a><li>
+						<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">Race<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a><label><input id="white_chk" type="checkbox" value="" onchange="myFilterFunction()" checked>  White</label></a></li>
+								<li><a><label><input id="black_chk" type="checkbox" value="" onchange="myFilterFunction()" checked>  Black</label></a></li>
+								<li><a><label><input id="hispanic_chk" type="checkbox" value="" onchange="myFilterFunction()" checked>  Hispanic</label></a></li>
+								<li><a><label><input id="other_chk" type="checkbox" value="" onchange="myFilterFunction()" checked>  Others</label></a></li>
+					
+							</ul>
+						</li>
+						<li><a style="padding-right:0px"><input id = 'filter-disease-setting' type="checkbox" onchange="myFilterFunction()"></a><li>
+						<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">Disease<span class="caret"></span></a>
+							<ul id="disease-list" class="dropdown-menu"></ul>
+						</li>
+						<li><a><label><input id="filter_setting_chk" type="checkbox" value="" onchange="filterSettingFunction()">  Apply Filter</label></a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		
+		<div id="chart"></div>
+   
+		<div id="myModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+			<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Alert</h4>
+					</div>
+					<div class="modal-body">
+						<p id="modal-alert-content">There are no items that matching current Filter conditions.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			
+			function getParameterByName(name) {
+				name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+				var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+					results = regex.exec(location.search);
+				return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+			}
+			
+			var filters = [];
+			var filename = getParameterByName('filename');
+			//var filename = 'filt_arthritis_cols.csv';
+			var svgContainer = d3.select("#chart").append("svg");
+			var svg = svgContainer.append('g');
+			
+			var totalData = [];
+			var priceMax = 0, personCountMax = 0;
+			
+			var xLabelTemps = [];
+			var xLabels = [];
+			var yLabels = [];			
+			var disease_names = [];
+		
+			var margin = { top: 80, right: 30, bottom: 100, left: 30 }, gridSize = 25, legendElementWidth = gridSize * 2, buckets = 6,
+				colors = ['#f6faaa','#FEE08B','#FDAE61','#F46D43','#D53E4F','#9E0142'];
+				
+			var colorScale = d3.scale.quantile()
+					  .range(colors);
+		
+			var showFilter = false;
+			var loaded = false;			
+			var gender_filter = false;
+			var race_filter = false;
+			var disease_filter = false;
+		
+			function filterSettingFunction()
+			{
+				showFilter = document.getElementById("filter_setting_chk").checked;
+				myFilterFunction();
+				healthCareViz(totalData, filters, showFilter);
+			};
+				  
+			function myFilterFunction() {
+				
+				gender_filter = document.getElementById("filter-gender-setting").checked;
+				race_filter = document.getElementById("filter-race-setting").checked;
+				<!-- location_filter = document.getElementById("filter-location-setting").checked; -->
+				disease_filter = document.getElementById("filter-disease-setting").checked;
+				
+				var male = document.getElementById("male_chk").checked;
+				var female = document.getElementById("female_chk").checked;
+				
+				var white = document.getElementById("white_chk").checked;
+				var black = document.getElementById("black_chk").checked;
+				var others = document.getElementById("other_chk").checked;
+				var hispanic = document.getElementById("hispanic_chk").checked;
+				
+				// SEX FILTER
+				if( male == true && female == true)
+				{
+					filters['sex'] = 't';
+				}
+				else
+				{
+					if( male == false && female == false)
+					{
+						filters['sex'] = 'f';
+					}
+					else
+					{
+						if(male == true) filters['sex'] = 'm';
+						if(female == true) filters['sex'] = 'n/a';
+					}
+				}
+				
+				// RACE FILTER
+				if( white == true && black == true && hispanic == true && others == true)
+				{
+					filters['race'] = 't';
+				}
+				else
+				{
+					if( white == false && black == false && hispanic == false && others == false)
+					{
+						filters['race'] = 'f';
+					}
+					else
+					{
+						filters['race'] = '';
+						if(white == true) filters['race'] += 'w/';
+						if(black == true) filters['race'] += 'b/';
+						if(hispanic == true) filters['race'] += 'h/';
+						if(others == true) filters['race'] += 'o/';
+					}
+				}
+				
+				// DISEASE FILTER
+				for(var i =0; i < disease_names.length; i++)
+				{
+					if(document.getElementById(disease_names[i]).checked) { filters[disease_names[i]] = 'y'; } else { filters[disease_names[i]] = 'n';}
+				}
+				
+				healthCareViz(totalData, filters, showFilter);
+			};
+		
+			Array.prototype.clean = function(deleteValue) {
+				for (var i = 0; i < this.length; i++) {
+					if (this[i] == deleteValue) {         
+						  this.splice(i, 1);
+						  i--;
+					}
+				}
+				return this;
+			};
+		
+			String.prototype.capitalize = function() {
+				return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+			};
+			
+			function loadData(filename) {
+				d3.csv( filename, function(error, data) {
+					totalData = data;				
+					// update graph
+					healthCareViz(totalData, filters, false);
+					
+					loaded = true;
+					
+				});
+			};
+		
+			var healthCareViz = function(inData, filters, needFilter)
+			{
+				// Filter Condition Checking
+				var data = [];
 
-</body>
+				/// Do filter if needFilter == true, or do not filter when it is false.
+				if(needFilter == true) {
+					
+					if(filters['sex'] == 'f' || filters['race'] == 'f' || filters['disease'] == 'f')
+					{	
+						var disease_chk = false;
+						
+						for(var i =0; i < disease_names.length; i++)
+						{
+							if(document.getElementById(disease_names[i]).checked) disease_chk = true;
+						}
+						// show error message-box
+						if(disease_chk == false) $('#myModal').modal('show');
+						return;
+					}
+						
+					/// Do filter
+					
+					var raceFilters = filters['race'].split("/").clean("");
+					
+					for ( var i = 0, iLen = inData.length; i < iLen; i++) {
+						var rowData = inData[i];
+						
+						////////////
+						if(gender_filter == true)
+						{
+							if(filters['sex'] != 't') {
+								if(rowData['info__gender'] != filters['sex'] ) continue;
+							}
+						}
+						
+						if(race_filter == true)
+						{
+							if(filters['race'] != 't') {
+								var passRaceFilter = false;
+								for(var j = 0, jLen = raceFilters.length; j < jLen; j++) {
+									if(rowData['info__race'] == raceFilters[j]) {
+										passRaceFilter = true;
+										break;
+									}
+								}
+								
+								if(passRaceFilter == false) continue;
+							}
+						}
+						
+						if(disease_filter == true)
+						{
+							var passDisFilter = true;
+							for(var k = 0; k < disease_names.length; k++)
+							{
+								if(rowData[disease_names[k]] != filters[disease_names[k]]) {
+									passDisFilter = false;
+									break;
+								}
+							}
+
+							if(passDisFilter == false) continue;
+						}
+						data.push(rowData);
+					}
+				} else {
+					// no filter, use original data
+					data = inData;
+				}
+				
+				if(data.length == 0) {
+					// No data
+					// Show error message
+					$('#myModal').modal('show');
+					return;
+				}
+
+				//////////////// Filter finished, data : is to be used
+				
+				if(loaded == false)
+					priceMax = d3.max(data, function(d) { return +d.info__claim_cost;} );
+					
+				var ySeg = Math.ceil( priceMax / 10000);
+				
+				var dataKey = Object.keys( data [0]);
+				var index = 0, result = [], final_data = [];
+				
+				if(loaded == false) {
+					var disease_list_html = '';
+					for (var i = 0; i < dataKey.length; i++) 
+					{
+						if(dataKey[i].indexOf("diagnosis__") == 0 || dataKey[i].indexOf("procedure__") == 0)
+						{
+							index++;
+							xLabels.push(dataKey[i]);
+							xLabelTemps.push(index);							
+						}
+						
+						if(dataKey[i].indexOf("info__chronic_") == 0)
+						{
+							disease_names.push(dataKey[i]);
+							var optionLabel = dataKey[i].replace("info__", "");
+							optionLabel = optionLabel.replace(/_/g , " ").capitalize();
+							
+							disease_list_html += '<li><a><label><input id="' + dataKey[i] +
+									   '" type="checkbox" value="" onchange="myFilterFunction()" checked>  ' + optionLabel + 
+									   '</label></a></li>';
+						}
+					}
+					document.getElementById("disease-list").innerHTML = disease_list_html; //d3.select("#disease-list").append(disease_list_html);
+				}
+
+				var width = 25 * xLabels.length - margin.left - margin.right,
+					height = 25 * ySeg - margin.top - margin.bottom;
+				
+				if(loaded == false) {
+					for(var i = 0 ; i < ySeg; i++)
+					{
+						yLabels[i] = i + "K - " + (i+1) + "K";
+					}
+				}
+
+				svgContainer
+					.attr("width", width + margin.left + margin.right + 150)
+					.attr("height", height + margin.top + margin.bottom +150);
+
+				svg
+					.attr("transform", "translate(" + margin.left + ", 100)");
+			
+				if(loaded == false) {
+					var yLabel = svg.selectAll(".yLabel")
+						.data(yLabels);
+						
+					yLabel.enter().append("text");
+					
+					yLabel.text(function (d) { return d; })
+							.attr("x", 0)
+							.attr("y", function (d, i) { return i * gridSize; })
+							.style("text-anchor", "end")
+							//.attr("transform", "translate(-6," + gridSize / 1.5 + ")")
+							.attr("transform", "translate(-6,-6)")
+							.attr("class", function (d, i) { return ((i >= 0 && i <= 4) ? "dayLabel mono axis axis-cost" : "yLabel mono axis"); });
+					
+					yLabel.exit().remove();
+
+					var xLabel = svg.selectAll(".xLabel")
+						.data(xLabels);
+						
+					xLabel.enter().append("text")
+							.text(function(d, i) { return i; })
+							.attr("x", function(d, i) { return i * gridSize; })
+							.attr("y", 0)
+							.style("text-anchor", "middle")
+							.attr("transform", "translate(" + gridSize / 2 + ", -30)")
+							.attr("class", function(d, i) { return ((i >= 7 && i <= 16) ? "xLabel mono axis axis-diagnosis" : "xLabel mono axis"); })
+							.append("title")
+							.text(function(d) { return d; });
+				
+					xLabel.exit().remove();
+				}
+				
+				for(var i = 0; i < data.length; i++) 
+				{
+					var sector = Math.floor(parseInt(data[i]["info__claim_cost"]) / 10000);
+					
+					if(result[sector]) {
+						for(var j = 0, jLen = xLabels.length; j < jLen; j++) {
+							result[ sector ][ xLabels[j] ] += parseInt(data[i][ xLabels[j] ]);
+						}
+					} else {
+						result[sector] = [];
+						for(var j = 0, jLen = xLabels.length; j < jLen; j++) {
+							result[ sector ][ xLabels[j] ] = parseInt(data[i][ xLabels[j] ]);
+						}                  
+					}
+				}
+									
+				for( var i = 0; i < ySeg; i++)
+				{
+					for( var j = 0; j < xLabels.length; j++)
+					{
+						if(result[i] == null)
+						{
+							final_data.push( {
+								diagnosis: j,
+								cost: i,
+								num: 0,
+							});
+						}
+						else
+						{
+							final_data.push( {
+								diagnosis: j,
+								cost: i,
+								num: result[i][xLabels[j]],
+							});
+						}
+					}
+				}
+
+				if(loaded == false) {
+					personCountMax = d3.max(final_data, function (d) { return d.num; });
+					console.log('personMax = ' + personCountMax);
+					
+					colorScale
+					  .domain([0, buckets - 1, personCountMax]);
+				}
+				
+				var cards = svg.selectAll(".diagnosis")
+					.data(final_data);
+
+				cards.enter().append("rect")
+					.attr("x", function(d) { return (d.diagnosis) * gridSize; })
+					.attr("y", function(d) { return (d.cost - 1) * gridSize; })
+					.attr("rx", 4)
+					.attr("ry", 4)
+					.attr("class", "diagnosis bordered")
+					.attr("width", gridSize)
+					.attr("height", gridSize)
+					.style("fill", colors[0])
+					.append("title")
+					.text(function(d) { return d.num + " people"; });
+
+				cards.transition().duration(1000)
+					.style("fill", function(d) { return colorScale(d.num); });
+			
+				cards.exit().remove();
+
+				if(loaded == false ) {
+					var legend = svg.selectAll(".legend")
+						.data([0].concat(colorScale.quantiles()), function(d) { return d; });
+
+					legend.enter().append("g")
+						.attr("class", "legend")
+						.attr("transform", "translate(0,175)");
+
+					legend.append("rect")
+						.attr("x", function(d, i) { return legendElementWidth * i; })
+						.attr("y", height)
+						.attr("width", legendElementWidth)
+						.attr("height", gridSize / 2)
+						.style("fill", function(d, i) { return colors[i]; });
+
+					legend.append("text")
+						.attr("class", "mono")
+						.attr("transform", "translate(0,-30)")
+						.text(function(d) { return "≥ " + Math.round(d);})
+						.attr("x", function(d, i) { return legendElementWidth * i; })
+						.attr("y", height + gridSize);
+
+					legend.exit().remove();			
+				}
+			};
+			
+			loadData(filename);
+		</script>
+	</body>
 </html>

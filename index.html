@@ -131,7 +131,7 @@
 			var disease_names = [];
 		
 			var margin = { top: 80, right: 30, bottom: 100, left: 30 }, gridSize = 15, legendElementWidth = gridSize * 3, buckets = 6,
-				colors = ['#f6faaa','#FEE08B','#FDAE61','#F46D43','#D53E4F','#9E0142'];
+				colors = ['#FFFFFF', '#f6faaa','#FEE08B','#FDAE61','#F46D43','#D53E4F','#9E0142'];
 				
 			var colorScale = d3.scale.quantile()
 					  .range(colors);
@@ -445,7 +445,7 @@
 					console.log('personMax = ' + personCountMax);
 					
 					colorScale
-					  .domain([0, 50, 500, 3000, personCountMax]);
+					  .domain([0, 4, 50, 500, 3000, personCountMax]);
 				}
 				
 				var cards = svg.selectAll(".diagnosis")

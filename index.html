@@ -316,10 +316,12 @@
 				var width = 25 * xLabels.length - margin.left - margin.right,
 					height = 25 * ySeg - margin.top - margin.bottom;
 				
+				
+				// For cost labels 0-10k and so on
 				if(loaded == false) {
 					for(var i = 0 ; i < ySeg; i++)
 					{
-						yLabels[i] = i + "K - " + (i+1) + "K";
+						yLabels[i] = i + "0K - " + (i+1) + "0K";
 					}
 				}
 
@@ -406,7 +408,7 @@
 					console.log('personMax = ' + personCountMax);
 					
 					colorScale
-					  .domain([0, buckets - 1, personCountMax]);
+					  .domain([0, 50, 500, 3000, personCountMax]);
 				}
 				
 				var cards = svg.selectAll(".diagnosis")

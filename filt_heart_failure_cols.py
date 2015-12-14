@@ -28,13 +28,13 @@ with open('pvecs.csv', 'r') as fin, open('filt_heart_failure_cols.csv', 'w') as 
 		next(incsv)
 	for row in csv.reader(fin, delimiter=','):
 		total_diag_count += 1
-		if row[1113] == 'y':
+		if row[1114] == 'y':
 			heart_failure_yes_count += 1
 
 		for i in dp_range:
 			if row[i] == '1':
 				diag_yes_count[i] += 1
-				if row[1113] == 'y':
+				if row[1114] == 'y':
 					heart_failure_diag_count[i] += 1
 
 
@@ -70,7 +70,7 @@ for i in range(1128,3179):
 with open('pvecs.csv', 'r') as fin, open('filt_heart_failure_cols.csv', 'w') as fout:
 	writer = csv.writer(fout, delimiter=',')
 	for row in csv.reader(fin, delimiter=','):
-		if row[1113] == 'y' or row[1113] == "info__chronic_heart_failure":
+		if row[1114] == 'y' or row[1114] == "info__chronic_heart_failure":
 			temp_row = []
 			for i in column_indices:
 				temp_row.append(row[i])

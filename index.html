@@ -189,11 +189,6 @@
 					}
 				}
 				
-				// DISEASE FILTER
-				for(var i =0; i < disease_names.length; i++)
-				{
-					if(document.getElementById(disease_names[i]).checked) { filters[disease_names[i]] = 'y'; } else { filters[disease_names[i]] = 'n';}
-				}
 				
 				healthCareViz(totalData, filters, showFilter);
 			};

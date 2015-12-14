@@ -15,6 +15,7 @@
 		
 		
 	</head>
+	
 	<body>
 		<nav class="navbar navbar-inverse">
 			<div class="container-fluid">
@@ -50,7 +51,7 @@
 				</div>
 			</div>
 		</nav>
-		
+		<h2 id="disease-heading"></h2>
 		<div id="chart"></div>
    
 		<div id="myModal" class="modal fade" role="dialog">
@@ -456,6 +457,43 @@
 					legend.exit().remove();			
 				}
 			};
+			
+			$(document).ready( function() {
+				var diseaseName;
+				switch (filename) {
+					case "filt_cancer_cols.csv":
+						diseaseName = "Cancer";
+						break;
+					case "filt_arthritis_cols.csv":
+						diseaseName = "Arthritis";
+						break;
+					case "filt_alzheimer_cols.csv":
+						diseaseName = "Alzheimer";
+						break;
+					case "filt_depression_cols.csv":
+						diseaseName = "Depression";
+						break;
+					case "filt_diabetes_cols.csv":
+						diseaseName = "Diabetes";
+						break;
+					case "filt_heart_failure_cols.csv":
+						diseaseName = "Diabetes";
+						break;
+					case "filt_ischemic_heart_disease_cols.csv":
+						diseaseName = "Diabetes";
+						break;
+					case "filt_obstructive_pulmonary_disease_cols.csv":
+						diseaseName = "Obstructive Pulmonary Disease";
+						break;
+					case "filt_osteoporosis_cols.csv":
+						diseaseName = "Osteoporosis";
+						break;
+					case "filt_stroke_cols.csv":
+						diseaseName = "Stroke";
+						break;
+				}
+				$("#disease-heading").html("Chronic disease: " + diseaseName);
+			});
 			
 			loadData(filename);
 		</script>

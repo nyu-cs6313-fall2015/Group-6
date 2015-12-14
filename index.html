@@ -93,7 +93,7 @@
 			var yLabels = [];			
 			var disease_names = [];
 		
-			var margin = { top: 80, right: 30, bottom: 100, left: 30 }, gridSize = 25, legendElementWidth = gridSize * 2, buckets = 6,
+			var margin = { top: 80, right: 30, bottom: 100, left: 30 }, gridSize = 15, legendElementWidth = gridSize * 3, buckets = 6,
 				colors = ['#f6faaa','#FEE08B','#FDAE61','#F46D43','#D53E4F','#9E0142'];
 				
 			var colorScale = d3.scale.quantile()
@@ -313,8 +313,8 @@
 					document.getElementById("disease-list").innerHTML = disease_list_html; //d3.select("#disease-list").append(disease_list_html);
 				}
 
-				var width = 25 * xLabels.length - margin.left - margin.right,
-					height = 25 * ySeg - margin.top - margin.bottom;
+				var width = 17 * xLabels.length - margin.left - margin.right,
+					height = 17 * ySeg - margin.top - margin.bottom;
 				
 				
 				// For cost labels 0-10k and so on

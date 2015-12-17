@@ -15,6 +15,7 @@
 		
 		
 	</head>
+	
 	<body>
 		<nav class="navbar navbar-inverse">
 			<div class="container-fluid">
@@ -41,10 +42,6 @@
 					
 							</ul>
 						</li>
-<!-- 						<li><a style="padding-right:0px"><input id = 'filter-disease-setting' type="checkbox" onchange="myFilterFunction()"></a><li>
-						<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">Disease<span class="caret"></span></a>
-							<ul id="disease-list" class="dropdown-menu"></ul>
-						</li> -->
 
 						<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">Disease<span class="caret"></span></a>
            
@@ -63,15 +60,13 @@
 								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_heart_failure_cols.csv">failure_cols</a></li>
 								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_stroke_cols.csv">stroke_cols</a></li>					
 							</ul>
-						</li>
-
+						</li>                        
 
 						<li><a><label><input id="filter_setting_chk" type="checkbox" value="" onchange="filterSettingFunction()">  Apply Filter</label></a></li>
 					</ul>
 				</div>
 			</div>
 		</nav>
-		
 
 		<h2 id="disease-heading"></h2>
 		<div id="chart"></div>
@@ -124,6 +119,7 @@
 					  .range(colors1);
 			var colorScale2 = d3.scale.quantile()
 					  .range(colors2);
+
 			var showFilter = false;
 			var loaded = false;			
 			var gender_filter = false;
@@ -141,8 +137,9 @@
 				
 				gender_filter = document.getElementById("filter-gender-setting").checked;
 				race_filter = document.getElementById("filter-race-setting").checked;
-				<!-- location_filter = document.getElementById("filter-location-setting").checked; -->
-				// disease_filter = document.getElementById("filter-disease-setting").checked;
+
+				//location_filter = document.getElementById("filter-location-setting").checked;
+				//disease_filter = document.getElementById("filter-disease-setting").checked;
 				
 				var male = document.getElementById("male_chk").checked;
 				var female = document.getElementById("female_chk").checked;
@@ -341,6 +338,7 @@
 				var width = (25 + 2) * xLabels.length - margin.left - margin.right,
 					height = 23 * ySeg - margin.top - margin.bottom;
 				
+				// For cost labels 0-10k and so on
 				if(loaded == false) {
 					for(var i = 0 ; i < ySeg; i++)
 					{
@@ -555,7 +553,7 @@
 				}
 				$("#disease-heading").html("Chronic disease: " + diseaseName);
 			});
-			
+
 			loadData(filename);
 		</script>
 	</body>

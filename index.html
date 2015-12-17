@@ -42,37 +42,32 @@
 					
 							</ul>
 						</li>
-                        
-                        
-                        <li><a style="padding-right:0px"></a><li>
-                        
-            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">Disease<span class="caret"></span></a>
+
+						<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">Disease<span class="caret"></span></a>
            
-             <ul class="dropdown-menu">
-                 <li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_depression_cols.csv">depression</a></li>
-                 
-<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_alzheimer_cols.csv">alzheimer</a></li>
-<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_arthritis_cols.csv">arthritis</a></li>
-<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_diabetes_cols.csv">diabetes</a></li>
-<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_ischemic_heart_disease_cols.csv">heart_disease</a></li>
-<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_kidney_disease_cols.csv">kidney_disease</a></li>
-                 
-<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_obstructive_pulmonary_disease_cols.csv">pulmonary_disease</a></li>
-<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_osteoporosis_cols.csv">osteoporosis_cols</a></li>
-<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_cancer_cols.csv">cancer_cols</a></li>
-<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_heart_failure_cols.csv">failure_cols</a></li>
-<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_stroke_cols.csv">stroke_cols</a></li>					
-               </ul>
-						</li>
-                        
-                        
-                        
-                        
+							<ul class="dropdown-menu">
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_depression_cols.csv">depression</a></li>
+								                 
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_alzheimer_cols.csv">alzheimer</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_arthritis_cols.csv">arthritis</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_diabetes_cols.csv">diabetes</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_ischemic_heart_disease_cols.csv">heart_disease</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_kidney_disease_cols.csv">kidney_disease</a></li>
+								                 
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_obstructive_pulmonary_disease_cols.csv">pulmonary_disease</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_osteoporosis_cols.csv">osteoporosis_cols</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_cancer_cols.csv">cancer_cols</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_heart_failure_cols.csv">failure_cols</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_stroke_cols.csv">stroke_cols</a></li>					
+							</ul>
+						</li>                        
+
 						<li><a><label><input id="filter_setting_chk" type="checkbox" value="" onchange="filterSettingFunction()">  Apply Filter</label></a></li>
 					</ul>
 				</div>
 			</div>
 		</nav>
+
 		<h2 id="disease-heading"></h2>
 		<div id="chart"></div>
    
@@ -104,7 +99,7 @@
 			
 			var filters = [];
 			var filename = getParameterByName('filename');
-			//var filename = 'filt_arthritis_cols.csv';
+			if(filename == '') filename = 'filt_cancer_cols.csv';
 			var svgContainer = d3.select("#chart").append("svg");
 			var svg = svgContainer.append('g');
 			
@@ -116,12 +111,15 @@
 			var yLabels = [];			
 			var disease_names = [];
 		
-			var margin = { top: 80, right: 30, bottom: 100, left: 30 }, gridSize = 15, legendElementWidth = gridSize * 3, buckets = 6,
-				colors = ['#FFFFFF', '#f6faaa','#FEE08B','#FDAE61','#F46D43','#D53E4F','#9E0142'];
-				
-			var colorScale = d3.scale.quantile()
-					  .range(colors);
-		
+			var margin = { top: 80, right: 30, bottom: 100, left: 30 }, gridSize = 15, legendElementWidth = gridSize * 3, buckets = 10,
+				colors1 = [ '#f8e6e6','#f7d6d8', '#f7aeb2','#f79a9e','#f7868b','#f7646b','#f74d55', '#f90510'],
+				colors2 = ['#f4f4f6', '#bdbff8', '#9da1f7', '#7f85f6', '#565ef7', '#3d46f6', '#2e38f6', '#0611f8'],
+				colors = [colors1, colors2];
+			var colorScale1 = d3.scale.quantile()
+					  .range(colors1);
+			var colorScale2 = d3.scale.quantile()
+					  .range(colors2);
+
 			var showFilter = false;
 			var loaded = false;			
 			var gender_filter = false;
@@ -139,6 +137,7 @@
 				
 				gender_filter = document.getElementById("filter-gender-setting").checked;
 				race_filter = document.getElementById("filter-race-setting").checked;
+
 				//location_filter = document.getElementById("filter-location-setting").checked;
 				//disease_filter = document.getElementById("filter-disease-setting").checked;
 				
@@ -189,6 +188,11 @@
 					}
 				}
 				
+				// DISEASE FILTER
+				// for(var i =0; i < disease_names.length; i++)
+				// {
+				// 	if(document.getElementById(disease_names[i]).checked) { filters[disease_names[i]] = 'y'; } else { filters[disease_names[i]] = 'n';}
+				// }
 				
 				healthCareViz(totalData, filters, showFilter);
 			};
@@ -331,9 +335,8 @@
 					//document.getElementById("disease-list").innerHTML = disease_list_html; //d3.select("#disease-list").append(disease_list_html);
 				}
 
-				var width = 17 * xLabels.length - margin.left - margin.right,
-					height = 17 * ySeg - margin.top - margin.bottom;
-				
+				var width = (25 + 2) * xLabels.length - margin.left - margin.right,
+					height = 23 * ySeg - margin.top - margin.bottom;
 				
 				// For cost labels 0-10k and so on
 				if(loaded == false) {
@@ -358,7 +361,7 @@
 					
 					yLabel.text(function (d) { return d; })
 							.attr("x", 0)
-							.attr("y", function (d, i) { return i * gridSize; })
+							.attr("y", function (d, i) { return (yLabels.length - i - 1) * gridSize; })
 							.style("text-anchor", "end")
 							//.attr("transform", "translate(-6," + gridSize / 1.5 + ")")
 							.attr("transform", "translate(-6,-6)")
@@ -371,8 +374,9 @@
 						
 					xLabel.enter().append("text")
 							.text(function(d, i) { return i; })
-							.attr("x", function(d, i) { return i * gridSize; })
-							.attr("y", 0)
+							//.attr("writing-mode", "tb-rl")
+							.attr("x", function(d, i) { return i * (gridSize + 2); })
+							.attr("y", height)
 							.style("text-anchor", "middle")
 							.attr("transform", "translate(" + gridSize / 2 + ", -30)")
 							.attr("class", function(d, i) { return ((i >= 7 && i <= 16) ? "xLabel mono axis axis-diagnosis" : "xLabel mono axis"); })
@@ -384,7 +388,7 @@
 				
 				for(var i = 0; i < data.length; i++) 
 				{
-					var sector = Math.floor(parseInt(data[i]["info__claim_cost"]) / 10000);
+					var sector = Math.abs( Math.floor(parseInt(data[i]["info__claim_cost"]) / 10000) - ySeg);
 					
 					if(result[sector]) {
 						for(var j = 0, jLen = xLabels.length; j < jLen; j++) {
@@ -400,14 +404,20 @@
 									
 				for( var i = 0; i < ySeg; i++)
 				{
+					
 					for( var j = 0; j < xLabels.length; j++)
 					{
+						var type;
+						if(xLabels[j].indexOf("diagnosis__") == 0) type = 0; 
+						if(xLabels[j].indexOf("procedure__") == 0) type = 1;
+						
 						if(result[i] == null)
 						{
 							final_data.push( {
 								diagnosis: j,
 								cost: i,
 								num: 0,
+								kind:type,
 							});
 						}
 						else
@@ -416,6 +426,7 @@
 								diagnosis: j,
 								cost: i,
 								num: result[i][xLabels[j]],
+								kind:type,
 							});
 						}
 					}
@@ -425,7 +436,9 @@
 					personCountMax = d3.max(final_data, function (d) { return d.num; });
 					console.log('personMax = ' + personCountMax);
 					
-					colorScale
+					colorScale1
+					  .domain([0, 1, 50, 500, 3000, personCountMax]);
+					colorScale2
 					  .domain([0, 1, 50, 500, 3000, personCountMax]);
 				}
 				
@@ -433,10 +446,10 @@
 					.data(final_data);
 
 				cards.enter().append("rect")
-					.attr("x", function(d) { return (d.diagnosis) * gridSize; })
+					.attr("x", function(d) { return (d.diagnosis) * gridSize + (d.diagnosis-1) * 2; })
 					.attr("y", function(d) { return (d.cost - 1) * gridSize; })
-					.attr("rx", 4)
-					.attr("ry", 4)
+					//.attr("rx", 4)
+					//.attr("ry", 4)
 					.attr("class", "diagnosis bordered")
 					.attr("width", gridSize)
 					.attr("height", gridSize)
@@ -445,13 +458,16 @@
 					.text(function(d) { return d.num + " people"; });
 
 				cards.transition().duration(1000)
-					.style("fill", function(d) { return colorScale(d.num); });
+					.style("fill", function(d) {
+						if(d.kind == 0) return colorScale1(d.num);
+						if(d.kind == 1) return colorScale2(d.num);}
+					);
 			
 				cards.exit().remove();
-
+				
 				if(loaded == false ) {
 					var legend = svg.selectAll(".legend")
-						.data([0].concat(colorScale.quantiles()), function(d) { return d; });
+						.data([0].concat(colorScale1.quantiles()), function(d) { return d; });
 
 					legend.enter().append("g")
 						.attr("class", "legend")
@@ -462,7 +478,7 @@
 						.attr("y", height)
 						.attr("width", legendElementWidth)
 						.attr("height", gridSize / 2)
-						.style("fill", function(d, i) { return colors[i]; });
+						.style("fill", function(d, i) { return colors1[i]; });
 
 					legend.append("text")
 						.attr("class", "mono")
@@ -471,10 +487,36 @@
 						.attr("x", function(d, i) { return legendElementWidth * i; })
 						.attr("y", height + gridSize);
 
-					legend.exit().remove();			
+					legend.exit().remove();
+					
+					var legend1 = svg.selectAll(".legend1")
+						.data([0].concat(colorScale2.quantiles()), function(d) { return d; });
+
+					legend1.enter().append("g")
+						.attr("class", "legend1")
+						.attr("transform", "translate(0,175)");
+
+					legend1.append("rect")
+						.attr("x", function(d, i) { return legendElementWidth * (i+11); })
+						.attr("y", height)
+						.attr("width", legendElementWidth)
+						.attr("height", gridSize / 2)
+						.style("fill", function(d, i) { return colors2[i]; });
+
+					legend1.append("text")
+						.attr("class", "mono")
+						.attr("transform", "translate(0,-30)")
+						.text(function(d) { return "≥ " + Math.round(d);})
+						.attr("x", function(d, i) { return legendElementWidth * (i+11); })
+						.attr("y", height + gridSize);
+
+					legend1.exit().remove();
+
 				}
+
+				
 			};
-			
+
 			$(document).ready( function() {
 				var diseaseName;
 				switch (filename) {
@@ -511,7 +553,7 @@
 				}
 				$("#disease-heading").html("Chronic disease: " + diseaseName);
 			});
-			
+
 			loadData(filename);
 		</script>
 	</body>

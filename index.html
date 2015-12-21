@@ -363,7 +363,7 @@
 					
 					yLabel.text(function (d) { return d; })
 							.attr("x", 0)
-							.attr("y", function (d, i) { return (yLabels.length - i - 1) * gridSize; })
+							.attr("y", function (d, i) { return ((yLabels.length - i - 1) * gridSize) - 48; })
 							.style("text-anchor", "end")
 							//.attr("transform", "translate(-6," + gridSize / 1.5 + ")")
 							.attr("transform", "translate(-6,-6)")
@@ -385,8 +385,9 @@
 							// .attr("transform", "translate(" + gridSize / 2 + ", -30)")
 							// .attr("transform", "translate(" + gridSize / 2 + ", -30)" + "rotate(-65)")
 							.attr("transform", function(d, i) {    // transform all the text elements
+								var hght2 = height - 50;
   return "translate(" + // First translate
-   i * (gridSize + 2) + "," + height + ")"+ // Translation params same as your existing x & y 
+   i * (gridSize + 2) + "," + hght2 + ")"+ // Translation params same as your existing x & y 
     "rotate(50)"            // THEN rotate them to give a nice slope
 })
 							.attr("class", function(d, i) { return ((i >= 7 && i <= 16) ? "xLabel mono axis axis-diagnosis" : "xLabel mono axis"); })
@@ -459,7 +460,7 @@
 
 				cards.enter().append("rect")
 					.attr("x", function(d) { return (d.diagnosis) * gridSize + (d.diagnosis-1) * 2; })
-					.attr("y", function(d) { return (d.cost - 1) * gridSize; })
+					.attr("y", function(d) { return ((d.cost - 1) * gridSize) - 50; })
 					//.attr("rx", 4)
 					//.attr("ry", 4)
 					.attr("class", "diagnosis bordered")

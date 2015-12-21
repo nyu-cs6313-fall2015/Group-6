@@ -89,6 +89,10 @@
 			</div>
 		</div>
 		<script type="text/javascript">
+		var h_json;
+							$.getJSON("cost_headers.json", function(json) {
+									h_json = json;					
+								});
 			
 			function getParameterByName(name) {
 				name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -374,8 +378,18 @@
 					var xLabel = svg.selectAll(".xLabel")
 						.data(xLabels);
 						
+					var dp_name;
+					
+
 					xLabel.enter().append("text")
-							.text(function(d, i) { return d; })
+							.text(function(d, i) { 
+								//return d; 
+								
+								var d_a = d.split("__");
+								dp_name = JSON.stringify(h_json[d_a[0]][d_a[1]]["name"]);
+								dp_name = dp_name.substring(0,40);
+								return dp_name;
+							})
 							//.attr("writing-mode", "tb-rl")
 							// .attr("x", function(d, i) { return i * (gridSize + 2); })
 							// .attr("y", height)

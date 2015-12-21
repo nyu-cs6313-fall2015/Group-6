@@ -1,0 +1,20 @@
+<html>
+
+<h1> </h1>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+
+	$.getJSON("cost_headers.json", function(json) {
+	    console.log(json); // this will show the info it in firebug console
+	    var d = "procedure__5070";
+	    var d_a = d.split("__");
+	    console.log(d_a[1]);
+	    var ob = JSON.stringify(json[d_a[0]][d_a[1]]["name"]);
+	    console.log(ob);
+	});
+
+</script>
+</html?

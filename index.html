@@ -103,7 +103,7 @@
 			
 			var filters = [];
 			var filename = getParameterByName('filename');
-			if(filename == '') filename = 'filt_cancer_cols.csv';
+			if(filename == '') filename = 'filt_alzheimer_cols.csv';
 			var svgContainer = d3.select("#chart").append("svg");
 			var svg = svgContainer.append('g');
 			
@@ -116,7 +116,8 @@
 			var disease_names = [];
 		
 			var margin = { top: 80, right: 30, bottom: 100, left: 30 }, gridSize = 15, legendElementWidth = gridSize * 3, buckets = 10,
-				colors1 = [ '#f8e6e6','#f7d6d8', '#f7aeb2','#f79a9e','#f7646b', '#f90510'],
+				// colors1 = [ '#f8e6e6','#f7d6d8', '#f7aeb2','#f79a9e','#f7646b', '#f90510'],
+				colors1 = ['#f6faaa','#FEE08B','#FDAE61','#F46D43','#D53E4F','#9E0142'],
 				colors2 = ['#f4f4f6', '#bdbff8', '#9da1f7', '#7f85f6', '#3d46f6', '#0611f8'],
 				colors = [colors1, colors2];
 			var colorScale1 = d3.scale.quantile()

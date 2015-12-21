@@ -2,8 +2,9 @@
 from __future__ import division
 import csv
 
-dp_range = range(2,1107) + range(1128,3179)
-
+dp_range = range(2,715) + range(875,1107) + range(1128,2695) + range(2906,3179)
+d_range = range(2,715) + range(875,1107)
+p_range = range(1128,2695) + range(2906,3179)
 
 # counters set to 0
 depression_yes_count = 0
@@ -45,7 +46,7 @@ column_indices = []
 for i in range (1108,1126):
 	column_indices.append(i)
 
-for i in range(2,1107):
+for i in d_range:
 	top = depression_diag_count[i]/depression_yes_count
 	bottom = diag_yes_count[i]/total_diag_count
 	# if top > 0.7:
@@ -53,16 +54,16 @@ for i in range(2,1107):
 	# 	column_indices.append(i)
 	if bottom:
 		ratio = top/bottom
-		if ratio >= 1 and top > 0.3:
+		if ratio >= 1 and top > 0.015:
 			col_count += 1
 			column_indices.append(i)
 
-for i in range(1128,3179):
+for i in p_range:
 	top = depression_diag_count[i]/depression_yes_count
 	bottom = diag_yes_count[i]/total_diag_count
 	if bottom:
 		ratio = top/bottom
-		if ratio > 1 and top > 0.03:
+		if ratio > 1 and top > 0.0025:
 			p_count += 1
 			column_indices.append(i)
 

@@ -46,19 +46,19 @@
 						<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">Disease<span class="caret"></span></a>
            
 							<ul class="dropdown-menu">
-								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_depression_cols.csv">depression</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_depression_cols.csv">Depression</a></li>
 								                 
-								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_alzheimer_cols.csv">alzheimer</a></li>
-								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_arthritis_cols.csv">arthritis</a></li>
-								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_diabetes_cols.csv">diabetes</a></li>
-								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_ischemic_heart_disease_cols.csv">heart_disease</a></li>
-								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_kidney_disease_cols.csv">kidney_disease</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_alzheimer_cols.csv">Alzheimer</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_arthritis_cols.csv">Arthritis</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_diabetes_cols.csv">Diabetes</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_ischemic_heart_disease_cols.csv">Ischemic Heart Disease</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_kidney_disease_cols.csv">Kidney Disease</a></li>
 								                 
-								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_obstructive_pulmonary_disease_cols.csv">pulmonary_disease</a></li>
-								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_osteoporosis_cols.csv">osteoporosis_cols</a></li>
-								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_cancer_cols.csv">cancer_cols</a></li>
-								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_heart_failure_cols.csv">failure_cols</a></li>
-								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_stroke_cols.csv">stroke_cols</a></li>					
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_obstructive_pulmonary_disease_cols.csv">Pulmonary Disease</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_osteoporosis_cols.csv">Osteoporosis</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_cancer_cols.csv">Cancer</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_heart_failure_cols.csv">Heart Failure</a></li>
+								<li><a href="http://nyu-cs6313-fall2015.github.io/Group-6/index.html?filename=filt_stroke_cols.csv">Stroke</a></li>					
 							</ul>
 						</li>                        
 
@@ -112,8 +112,8 @@
 			var disease_names = [];
 		
 			var margin = { top: 80, right: 30, bottom: 100, left: 30 }, gridSize = 15, legendElementWidth = gridSize * 3, buckets = 10,
-				colors1 = [ '#f8e6e6','#f7d6d8', '#f7aeb2','#f79a9e','#f7868b','#f7646b','#f74d55', '#f90510'],
-				colors2 = ['#f4f4f6', '#bdbff8', '#9da1f7', '#7f85f6', '#565ef7', '#3d46f6', '#2e38f6', '#0611f8'],
+				colors1 = [ '#f8e6e6','#f7d6d8', '#f7aeb2','#f79a9e','#f7646b', '#f90510'],
+				colors2 = ['#f4f4f6', '#bdbff8', '#9da1f7', '#7f85f6', '#3d46f6', '#0611f8'],
 				colors = [colors1, colors2];
 			var colorScale1 = d3.scale.quantile()
 					  .range(colors1);
@@ -450,9 +450,9 @@
 					console.log('personMax = ' + personCountMax);
 					
 					colorScale1
-					  .domain([0, 1, 50, 500, 3000, personCountMax]);
+					  .domain([0, 1, 50, 200, 400, personCountMax/2]);
 					colorScale2
-					  .domain([0, 1, 50, 500, 3000, personCountMax]);
+					  .domain([0, 1, 50, 200, personCountMax/3]);
 				}
 				
 				var cards = svg.selectAll(".diagnosis")
@@ -549,10 +549,10 @@
 						diseaseName = "Diabetes";
 						break;
 					case "filt_heart_failure_cols.csv":
-						diseaseName = "Diabetes";
+						diseaseName = "Heart Failure";
 						break;
 					case "filt_ischemic_heart_disease_cols.csv":
-						diseaseName = "Diabetes";
+						diseaseName = "Ischemic Heart Disease";
 						break;
 					case "filt_obstructive_pulmonary_disease_cols.csv":
 						diseaseName = "Obstructive Pulmonary Disease";
@@ -562,6 +562,9 @@
 						break;
 					case "filt_stroke_cols.csv":
 						diseaseName = "Stroke";
+						break;
+					case "filt_kidney_disease_cols.csv":
+						diseaseName = "Kidney Disease";
 						break;
 				}
 				$("#disease-heading").html("Chronic disease: " + diseaseName);

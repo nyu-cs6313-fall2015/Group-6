@@ -317,7 +317,9 @@
 						if(dataKey[i].indexOf("diagnosis__") == 0 || dataKey[i].indexOf("procedure__") == 0)
 						{
 							index++;
+							//  Here is where xLabels are pushed
 							xLabels.push(dataKey[i]);
+							//console.log(dataKey[i]);
 							xLabelTemps.push(index);							
 						}
 						
@@ -373,15 +375,25 @@
 						.data(xLabels);
 						
 					xLabel.enter().append("text")
-							.text(function(d, i) { return i; })
+							.text(function(d, i) { return d; })
 							//.attr("writing-mode", "tb-rl")
-							.attr("x", function(d, i) { return i * (gridSize + 2); })
-							.attr("y", height)
-							.style("text-anchor", "middle")
-							.attr("transform", "translate(" + gridSize / 2 + ", -30)")
+							// .attr("x", function(d, i) { return i * (gridSize + 2); })
+							// .attr("y", height)
+							.style("text-anchor", "left")
+							.attr("dx", "-2em")
+							.attr("dy", "-1.8em")
+							// .attr("transform", "translate(" + gridSize / 2 + ", -30)")
+							// .attr("transform", "translate(" + gridSize / 2 + ", -30)" + "rotate(-65)")
+							.attr("transform", function(d, i) {    // transform all the text elements
+  return "translate(" + // First translate
+   i * (gridSize + 2) + "," + height + ")"+ // Translation params same as your existing x & y 
+    "rotate(50)"            // THEN rotate them to give a nice slope
+})
 							.attr("class", function(d, i) { return ((i >= 7 && i <= 16) ? "xLabel mono axis axis-diagnosis" : "xLabel mono axis"); })
 							.append("title")
 							.text(function(d) { return d; });
+
+					//xLabel.text(function(d) {return d;}).attr("transform", "rotate(-65)");
 				
 					xLabel.exit().remove();
 				}
